@@ -12,5 +12,6 @@
 	 <h2>Apellido: ${student.lName}</h2>
 	 <h2>Edad: ${student.sAge}</h2>
 	 <h2>Status: ${student.activoDelegate}</h2>
+	 <button onclick="window.location.href = ${pageContext.request.contextPath}/" >Regresar</button>
 </body>
 </html>

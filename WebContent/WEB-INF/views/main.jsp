@@ -19,19 +19,32 @@
 	
 	<br>
 	
+	<button onclick="window.location.href = '${pageContext.request.contextPath}/student?id=0'">Agregar estudiante</button>
+	
+	<br>
+	<br>
+	
 	<table>
 		<tr>
 			<th>Name</th>
 			<th>Last Name</th>
 			<th>Age</th>
 			<th>Status</th>
+			<th>Editar</th>
+			<th>Borrar</th>
 		</tr>
-			<c:forEach items="${students}" var="students">
+			<c:forEach items="${students}" var="student">
 				<tr>
-					<td>${students.sName}</td>
-					<td>${students.lName}</td>
-					<td>${students.sAge}</td>
-					<td>${students.activoDelegate}</td>
+					<td>${student.sName}</td>
+					<td>${student.lName}</td>
+					<td>${student.sAge}</td>
+					<td>${student.activoDelegate}</td>
+					<td>
+						<button onclick="window.location.href = '${pageContext.request.contextPath}/student?id=${student.cStudent}'">Editar</button>
+					</td>
+					<td>
+						<button onclick="window.location.href = '${pageContext.request.contextPath}/deletestudent?id=${student.cStudent}'">Borrar</button>
+					</td>
 				</tr>	
 			</c:forEach>
 	</table>

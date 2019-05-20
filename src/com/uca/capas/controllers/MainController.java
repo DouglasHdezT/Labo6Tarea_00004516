@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,4 +60,83 @@ public class MainController {
 		return mav;
 	}
 	
+	@RequestMapping("/student")
+	public ModelAndView insertStudentView(@RequestParam Integer id) {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("add_edit_layout");
+		
+		Student student = null;
+		
+		if(id == 0) {
+			mav.addObject("message", "Nuevo estudiante");
+			student =  new Student();
+		}else {
+			try {
+				mav.addObject("message", "Estudiante encontrado ");
+				student = studentDao.findOne(id);
+			} catch (Exception e) {
+				e.printStackTrace();
+				
+				mav.addObject("message", "Estudiante no encontrado");
+				student = new Student();
+			}
+		}
+		
+		mav.addObject("student", student);
+		
+		return mav;
+		
+	}
+	
+	@RequestMapping(value = "/studentInsert", method = RequestMethod.POST)
+	public ModelAndView insertStudent(@ModelAttribute Student student) {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("result");
+		
+		try {
+			mav.addObject("message", "Agregado correctamente");
+			if (student.getcStudent() == null) studentDao.save(student,1);
+			else studentDao.save(student,0);
+			
+		} catch (Exception e) {
+			mav.addObject("message", "No se pudo agregar");
+		}
+		
+		mav.addObject("student", student);
+		
+		return mav;
+	}
+	
+	@RequestMapping("/deletestudent")
+	public ModelAndView deleteStudent(@RequestParam Integer id) {
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("result");
+		
+		Student student = null;
+		
+		if(id == 0) {
+			student =  new Student();
+		}else {
+			try {
+				student = studentDao.findOne(id);
+			} catch (Exception e) {
+				e.printStackTrace();
+				student = new Student();
+			}
+		}
+		
+		mav.addObject("student", student);
+		
+		try {
+			mav.addObject("message", "Registro eliminado");
+			studentDao.delete(student);
+		} catch (Exception e) {
+			mav.addObject("message", "Registro no eliminado");
+		}
+		
+		return mav;
+	}
 }
